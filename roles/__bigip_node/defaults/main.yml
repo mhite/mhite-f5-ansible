@@ -1,0 +1,6 @@
+---
+
+node_host: "9.9.9.9"
+node_name: "9.9.9.9"
+node_description: "Test description"
+node_partition: "NETLAB"
