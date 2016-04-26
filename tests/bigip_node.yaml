@@ -1,0 +1,34 @@
+---
+
+# Test the bigip_node module
+#
+# This playbook can be used to test the bigip_node module.
+#
+# Usage:
+#
+#    ansible-playbook -i inventory/hosts tests/bigip_node.yaml [OPTIONS]:
+#
+# Examples:
+#
+#    Run all of the tests
+#
+#    ansible-playbook -i inventory/hosts tests/bigip_node.yaml
+#
+#
+#    Only run the REST related tests
+#
+#    ansible-playbook -i inventory/hosts tests/bigip_node.yaml --tags rest
+#
+#
+#    Only run the SOAP related tests
+#
+#    ansible-playbook -i inventory/hosts tests/bigip_node.yaml --tags soap
+#
+
+- name: Test the bigip_node module
+  hosts: f5-test
+  connection: local
+  gather_facts: no
+
+  roles:
+      - __bigip_node

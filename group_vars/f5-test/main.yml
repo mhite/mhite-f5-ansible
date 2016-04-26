@@ -1,0 +1,5 @@
+---
+# file: main.yml
+
+bigip_username: "{{ vault_bigip_username }}"
+bigip_password: "{{ vault_bigip_password }}"
