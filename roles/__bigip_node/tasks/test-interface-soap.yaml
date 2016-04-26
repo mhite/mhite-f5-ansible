@@ -1,16 +1,17 @@
 ---
 
-- name: Create node 
+- name: Create node
   bigip_node:
       server: "{{ inventory_hostname }}"
-      username: "{{ bigip_username }}"
+      user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
       state: present
       host: "9.9.9.9"
+      name: "9.9.9.9"
       partition: "NETLAB"
   register: result
 
-- name: Assert create node 
+- name: Assert create node
   assert:
       that:
           - result|changed
