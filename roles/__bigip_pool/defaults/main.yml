@@ -1,0 +1,9 @@
+---
+
+pool_name: "test-pool"
+pool_partition: "NETLAB"
+pool_monitor_type: "m_of_n"
+pool_monitors: "/Common/http"
+pool_quorum: "1"
+pool_lb_method: "round_robin"
+pool_lb_method_alt: "least_connection_member"

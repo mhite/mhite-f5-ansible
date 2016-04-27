@@ -1,0 +1,105 @@
+---
+ 
+- name: Create pool 
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+    monitor_type: "{{ pool_monitor_type }}"
+    monitors: "{{ pool_monitors }}"
+    quorum: "{{ pool_quorum }}"
+    lb_method: "{{ pool_lb_method }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create pool 
+  assert:
+    that:
+      - result|changed
+  tags:
+    - create
+
+- name: Create pool - idempotent check
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+    monitor_type: "{{ pool_monitor_type }}"
+    monitors: "{{ pool_monitors }}"
+    quorum: "{{ pool_quorum }}"
+    lb_method: "{{ pool_lb_method }}"
+  register: result
+  tags:
+    - create
+  
+- name: Assert pool node - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - create
+
+- name: Change pool lb_method
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+    lb_method: "{{ pool_lb_method_alt }}"
+  register: result
+  tags:
+    - update
+
+- name: Assert change pool lb_method
+  assert:
+    that:
+      - result|changed
+  tags:
+    - update
+                        
+- name: Delete pool
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+  register: result
+  tags:
+    - delete
+      
+- name: Assert delete pool
+  assert:
+    that:
+      - result|changed
+  tags:
+    - delete
+        
+- name: Delete pool - idempotent check
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete pool - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - delete
