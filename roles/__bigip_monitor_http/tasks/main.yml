@@ -1,0 +1,121 @@
+---
+
+- name: Create http monitor
+  bigip_monitor_http:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_http_name }}"
+    partition: "{{ monitor_http_partition }}"
+    receive: "{{ monitor_http_receive }}"
+    send: "{{ monitor_http_send }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create http monitor
+  assert:
+    that:
+      - result|changed
+  tags:
+    - create
+
+- name: Create http monitor - idempotent check
+  bigip_monitor_http:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_http_name }}"
+    partition: "{{ monitor_http_partition }}"
+    receive: "{{ monitor_http_receive }}"
+    send: "{{ monitor_http_send }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create http monitor - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - create
+
+- name: Change http monitor receive string
+  bigip_monitor_http:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_http_name }}"
+    partition: "{{ monitor_http_partition }}"
+    receive: "new {{ monitor_http_receive }}"
+  register: result
+  tags:
+    - update
+
+- name: Assert change http monitor receive string
+  assert:
+    that:
+      - result|changed
+  tags:
+    - update
+
+- name: Change http monitor send string
+  bigip_monitor_http:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_http_name }}"
+    partition: "{{ monitor_http_partition }}"
+    send: "new {{ monitor_http_send }}"
+  register: result
+  tags:
+    - update
+
+- name: Assert change http monitor send string
+  assert:
+    that:
+      - result|changed
+  tags:
+    - update
+
+- name: Delete http monitor
+  bigip_monitor_http:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ monitor_http_name }}"
+    partition: "{{ monitor_http_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete http monitor
+  assert:
+    that:
+      - result|changed
+  tags:
+    - delete
+
+- name: Delete http monitor - idempotent check
+  bigip_monitor_http:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ monitor_http_name }}"
+    partition: "{{ monitor_http_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete http monitor - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - delete

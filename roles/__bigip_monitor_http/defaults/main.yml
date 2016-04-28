@@ -1,0 +1,6 @@
+---
+
+monitor_http_name: "test-http-monitor"
+monitor_http_partition: "NETLAB"
+monitor_http_send: "GET /"
+monitor_http_receive: "TEST RECEIVE"
