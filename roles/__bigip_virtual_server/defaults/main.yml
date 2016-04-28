@@ -1,0 +1,7 @@
+---
+
+virtual_server_name: "test-virtual-server"
+virtual_server_partition: "NETLAB"
+virtual_server_destination: "9.9.9.9"
+virtual_server_port: "80"
+virtual_server_description: "TEST DESCRIPTION"

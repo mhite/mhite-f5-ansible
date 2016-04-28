@@ -1,0 +1,101 @@
+---
+
+- name: Create virtual server
+  bigip_virtual_server:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ virtual_server_name }}"
+    partition: "{{ virtual_server_partition }}"
+    destination: "{{ virtual_server_destination }}"
+    port: "{{ virtual_server_port }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create virtual server
+  assert:
+    that:
+      - result|changed
+  tags:
+    - create
+
+- name: Create virtual server - idempotent check
+  bigip_virtual_server:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ virtual_server_name }}"
+    partition: "{{ virtual_server_partition }}"
+    destination: "{{ virtual_server_destination }}"
+    port: "{{ virtual_server_port }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create virtual server - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - create
+
+- name: Change virtual server description
+  bigip_virtual_server:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ virtual_server_name }}"
+    partition: "{{ virtual_server_partition }}"
+    description: "{{ virtual_server_description }}"
+  register: result
+  tags:
+    - update
+
+- name: Assert change virtual server description
+  assert:
+    that:
+      - result|changed
+  tags:
+    - update
+
+- name: Delete virtual server
+  bigip_virtual_server:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ virtual_server_name }}"
+    partition: "{{ virtual_server_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete virtual server
+  assert:
+    that:
+      - result|changed
+  tags:
+    - delete
+
+- name: Delete virtual server - idempotent check
+  bigip_virtual_server:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ virtual_server_name }}"
+    partition: "{{ virtual_server_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete virtual server - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - delete
