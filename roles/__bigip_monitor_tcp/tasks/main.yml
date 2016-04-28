@@ -1,0 +1,97 @@
+---
+
+- name: Create tcp monitor
+  bigip_monitor_tcp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_tcp_name }}"
+    partition: "{{ monitor_tcp_partition }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create tcp monitor
+  assert:
+    that:
+      - result|changed
+  tags:
+    - create
+
+- name: Create tcp monitor - idempotent check
+  bigip_monitor_tcp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_tcp_name }}"
+    partition: "{{ monitor_tcp_partition }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert create tcp monitor - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - create
+
+- name: Change tcp monitor send string
+  bigip_monitor_tcp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ monitor_tcp_name }}"
+    partition: "{{ monitor_tcp_partition }}"
+    send: "{{ monitor_tcp_send }}"
+  register: result
+  tags:
+    - update
+
+- name: Assert change tcp monitor send string
+  assert:
+    that:
+      - result|changed
+  tags:
+    - update
+
+- name: Delete tcp monitor
+  bigip_monitor_tcp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ monitor_tcp_name }}"
+    partition: "{{ monitor_tcp_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete tcp monitor
+  assert:
+    that:
+      - result|changed
+  tags:
+    - delete
+
+- name: Delete tcp monitor - idempotent check
+  bigip_monitor_tcp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ monitor_tcp_name }}"
+    partition: "{{ monitor_tcp_partition }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete tcp monitor - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - delete

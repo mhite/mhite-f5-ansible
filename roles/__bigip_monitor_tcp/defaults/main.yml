@@ -1,0 +1,5 @@
+---
+
+monitor_tcp_name: "test-http-monitor"
+monitor_tcp_partition: "NETLAB"
+monitor_tcp_send: "TEST SEND"

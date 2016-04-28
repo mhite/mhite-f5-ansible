@@ -1,0 +1,24 @@
+---
+
+# Test the bigip_monitor_tcp module
+#
+# This playbook can be used to test the bigip_monitor_tcp module.
+#
+# Usage:
+#
+#    ansible-playbook -i inventory/hosts tests/bigip_monitor_tcp.yml [OPTIONS]:
+#
+# Examples:
+#
+#    Run all of the tests
+#
+#    ansible-playbook -i inventory/hosts tests/bigip_monitor_tcp.yml
+#
+
+- name: Test the bigip_monitor_tcp module
+  hosts: f5-test
+  connection: local
+  gather_facts: no
+
+  roles:
+      - __bigip_monitor_tcp
