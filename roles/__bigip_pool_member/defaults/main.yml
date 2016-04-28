@@ -1,0 +1,7 @@
+---
+
+pool_name: "test-pool"
+pool_partition: "NETLAB"
+pool_member_name: "9.9.9.9"
+pool_member_port: "80"
+pool_member_description: "Slartibartfast"

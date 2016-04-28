@@ -1,0 +1,125 @@
+---
+
+- name: Create pool
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+  register: result
+  tags:
+    - create
+
+- name: Add pool member
+  bigip_pool_member:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_member_name }}"
+    partition: "{{ pool_partition }}"
+    port: "{{ pool_member_port }}"
+    pool: "{{ pool_name }}"
+  register: result
+  tags:
+    - create
+
+- name: Add pool member - idempotent check
+  bigip_pool_member:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_member_name }}"
+    partition: "{{ pool_partition }}"
+    port: "{{ pool_member_port }}"
+    pool: "{{ pool_name }}"
+  register: result
+  tags:
+    - create
+
+- name: Assert pool member - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - create
+
+- name: Change pool member description
+  bigip_pool_member:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: present
+    name: "{{ pool_member_name }}"
+    partition: "{{ pool_partition }}"
+    description: "{{ pool_member_description }}"
+    port: "{{ pool_member_port }}"
+    pool: "{{ pool_name }}"
+
+  register: result
+  tags:
+    - update
+
+- name: Assert change pool member description
+  assert:
+    that:
+      - result|changed
+  tags:
+    - update
+
+- name: Delete pool member
+  bigip_pool_member:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ pool_member_name }}"
+    partition: "{{ pool_partition }}"
+    port: "{{ pool_member_port }}"
+    pool: "{{ pool_name }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete pool member
+  assert:
+    that:
+      - result|changed
+  tags:
+    - delete
+
+- name: Delete pool memeber - idempotent check
+  bigip_pool_member:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ pool_member_name }}"
+    partition: "{{ pool_partition }}"
+    port: "{{ pool_member_port }}"
+    pool: "{{ pool_name }}"
+  register: result
+  tags:
+    - delete
+
+- name: Assert delete pool member - idempotent check
+  assert:
+    that:
+      - not result|changed
+  tags:
+    - delete
+
+- name: Delete pool
+  bigip_pool:
+    server: "{{ inventory_hostname }}"
+    user: "{{ bigip_username }}"
+    password: "{{ bigip_password }}"
+    state: absent
+    name: "{{ pool_name }}"
+    partition: "{{ pool_partition }}"
+  register: result
+  tags:
+    - delete
