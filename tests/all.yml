@@ -1,0 +1,29 @@
+---
+
+# Test all bigip_* modules
+#
+# This playbook can be used to test all bigip_* modules.
+#
+# Usage:
+#
+#    ansible-playbook -i inventory/hosts tests/all.yml [OPTIONS]:
+#
+# Examples:
+#
+#    Run all of the tests
+#
+#    ansible-playbook -i inventory/hosts tests/all.yml
+#
+
+- name: Test all bigip_* modules
+  hosts: f5-test
+  connection: local
+  gather_facts: no
+
+  roles:
+    - __bigip_monitor_http
+    - __bigip_monitor_tcp
+    - __bigip_node
+    - __bigip_pool
+    - __bigip_pool_member
+    - __bigip_virtual_server
